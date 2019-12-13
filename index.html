@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="style.css" rel="stylesheet">
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+      integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Open+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js"></script>
+
+</head>
+<body>
+        <nav class="navbar navbar-dark bg-dark">
+            <span class="navbar-brand mb-0 h1">Weather Dashboard</span>
+        </nav>
+
+        <div class="container">
+                <div class="row" id="main-content">
+                  <div class="col-4" id="city-column">
+                    <div class="row" id="search-div">
+                        <form id="city-form">
+                            <label for="city-input">Search for a City:</label>
+                            <br>
+                            <input type="text" id="city-input">
+                            <input class="bg-primary" id="add-city" type="submit" value="i">
+                        </form>  
+                    </div>
+                    <div class="row" id="cities-view">
+                        <!-- cities searched for get dumped here -->
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <div class="row" id="weather-view">
+                        
+                        <!-- current weather for searched city gets put here -->
+                    </div>
+                    <div class="row" id="5day">
+                        <h3>5-Day Forcast:</h3>
+                        <!-- five day forcast gets placed here -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript">
+
+var cities = ["Raleigh", "Charlotte", "Ashville", "Elizabeth City"]
+ 
+
+function displayCityInfo() {
+
+    $("#weather-view").empty();
+
+// This is our API key
+ var APIKey = "1e2baac35502ada6a2f1228a812729b7";
+ // Here we are building the URL we need to query the database
+ var cityWeather = $(this).attr("data-name");
+ var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityWeather + "&appid=" + APIKey;
+ console.log(cityWeather);
+ 
+
+// Creating an AJAX call for the specific movie button being clicked
+$.ajax({
+  url: queryURL,
+  method: "GET"
+}).then(function(response) {
+
+var weatherDiv = $("#weather-view");
+var iconCode = response.weather[0].icon; 
+console.log(iconCode)
+var iconURL = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
+var date = moment().format("MMM Do YY");  
+var hOne = $("<h1 id='One'>" + cityWeather + " (" + date + ") " + "<img src=" + iconURL + "></h1>");
+weatherDiv.append(hOne);
+
+var tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
+var pTwo= $("<p>").text("Termperature: " + tempF + " °F");
+weatherDiv.append(pTwo);
+
+var humidity = response.main.humidity;
+var pThree = $("<p>").text("Humidity: " + humidity + "%");
+weatherDiv.append(pThree);
+
+var wind = response.wind.speed;
+var pFour = $("<p>").text("Wind Speed: " + wind + " MPH");
+weatherDiv.append(pFour);
+
+
+
+  $("#weather-view").append(weatherDiv);
+
+
+});
+
+}
+
+function renderButtons() {
+
+// Deleting the cities prior to adding new cities
+// (this is necessary otherwise you will have repeat buttons)
+$("#cities-view").empty();
+
+// Looping through the array of cities
+for (var i = 0; i < cities.length; i++) {
+
+  // Then dynamicaly generating buttons for each city in the array
+  
+  var a = $("<button>");
+  // Adding a class of city-btn to our button
+  a.addClass("city-btn");
+  // Adding a data-attribute
+  a.attr("data-name", cities[i]);
+  // Providing the initial button text
+  a.text(cities[i]);
+  // Adding the button to the cities-view div
+  $("#cities-view").append(a);
+}
+}
+
+     $("#add-city").on("click", function(event) {
+        event.preventDefault();
+        // This line grabs the input from the textbox
+        var city = $("#city-input").val().trim();
+
+        // Adding city from the textbox to our array (--if/else-- to prevent entering empty input)
+        if (city === "") {
+            return;
+        } else {
+
+        cities.push(city);
+
+        // Calling renderButtons which handles the processing of our cities array
+        renderButtons();
+
+        $("#city-input").val("");
+     }});
+
+     // Adding a click event listener to all elements with a class of "movie-btn"
+     $(document).on("click", ".city-btn", displayCityInfo);
+
+
+    // Calling the renderButtons function to display the initial buttons
+    renderButtons();
+    
+    
+    
+    
+    </script>
+
+</body>
+</html>

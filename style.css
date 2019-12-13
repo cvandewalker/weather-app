@@ -1,0 +1,48 @@
+#weather-view {
+    border: solid 1px black;
+    display: inline-block;
+}
+
+.city-btn {
+    width: 100%;
+    text-align: left;
+    background-color: white;
+    border-radius: 5px;
+}
+
+#cites-view {
+    
+} 
+    
+
+ #city-column {
+     background-color: lightgray;
+     padding: 2.5%;
+    
+ }
+
+ #weather-view {
+     
+     width: 100%;
+     padding: 20px 10px;
+     margin-top: 10px;
+     margin-bottom: 10px;
+     margin-left: 5px;
+ }
+
+ #weather-view p {
+     font-size: larger;
+ }
+
+ label {
+     font-size: larger;
+ }
+
+ #add-city {
+     color: white;
+     border-radius: 5px;
+ }
+
+ #search-div {
+     margin-bottom: 10px;
+ }
