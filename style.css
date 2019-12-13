@@ -10,8 +10,11 @@
     border-radius: 5px;
 }
 
-#cites-view {
-    
+#uv-index {
+    padding: 4px;
+    color: white;
+    background-color: red;
+    border-radius: 5px;
 } 
     
 

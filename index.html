@@ -98,11 +98,25 @@ var pFour = $("<p>").text("Wind Speed: " + wind + " MPH");
 weatherDiv.append(pFour);
 
 
+$("#weather-view").append(weatherDiv);
 
-  $("#weather-view").append(weatherDiv);
+var lat = response.coord.lat;
+var lon = response.coord.lon;
+var queryUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon;
 
+$.ajax({
+  url: queryUV,
+  method: "GET"
+}).then(function(response) {
+
+var uvIndex = response.value;
+var pFive = $("<p> UV Index: " + "<span id='uv-index'>" + uvIndex + "</span></p>");
+
+weatherDiv.append(pFive);
+});
 
 });
+
 
 }
 
