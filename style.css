@@ -3,11 +3,24 @@
     display: inline-block;
 }
 
+#main-content {
+    width: 100%;
+}
+
+#main-container {
+    width: 100%;
+}
+
 .city-btn {
     width: 100%;
     text-align: left;
     background-color: white;
-    border-radius: 5px;
+    border-radius: 1px;
+    padding: 10px 10px;
+}
+
+.city-btn:hover {
+    border: solid black 1px;
 }
 
 #uv-index {
@@ -20,8 +33,7 @@
 
  #city-column {
      background-color: lightgray;
-     padding: 2.5%;
-    
+     padding: 2.5%; 
  }
 
  #weather-view {
@@ -48,4 +60,24 @@
 
  #search-div {
      margin-bottom: 10px;
+ }
+
+ #forcastDiv {
+     padding: 5px 10px 5px 5px;
+     border-radius: 5px;
+    
+ }
+
+ #forcastDiv p {
+    color: white;
+ }
+
+ #forcastDiv h4 {
+     color: white;
+ }
+
+ #fiveDay {
+     margin-left: 5px;
+     display: flex;
+     justify-content: space-around;
  }
