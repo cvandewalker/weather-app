@@ -55,24 +55,17 @@
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript">
-
 var cities = ["Raleigh", "Charlotte", "Ashville", "Elizabeth City"]
-
  
-
 function displayCityInfo() {
-
     $("#weather-view").empty();
     $("#fiveDay").empty();
-
  // Here we are building the URL we need to query the database
  //============================================================
-
 // This is our API key
  var APIKey = "1e2baac35502ada6a2f1228a812729b7";
  // creating city variable with two options
  var cityWeather = $(this).attr("data-name") || 'undefined';
-
 //creating if/else so that last searched for city renders on page reload.
  if (cityWeather == 'undefined') {
     cityWeather = cities[0];
@@ -81,65 +74,50 @@ function displayCityInfo() {
  }
  var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityWeather + "&appid=" + APIKey;
  
-
 // Creating an AJAX call for the specific city button being clicked
 $.ajax({
   url: queryURL,
   method: "GET"
 }).then(function(response) {
-
 var weatherDiv = $("#weather-view");
 var iconCode = response.weather[0].icon; 
-
 var iconURL = "http://openweathermap.org/img/wn/" + iconCode + "@2x.png";
 var date = moment().format("MMM Do YY");  
 var hOne = $("<h1 id='One'>" + cityWeather + " (" + date + ") " + "<img src=" + iconURL + "></h1>");
 weatherDiv.append(hOne);
-
 var tempF = ((response.main.temp - 273.15) * 1.80 + 32).toFixed(1);
 var pTwo= $("<p>").text("Termperature: " + tempF + " °F");
 weatherDiv.append(pTwo);
-
 var humidity = response.main.humidity;
 var pThree = $("<p>").text("Humidity: " + humidity + "%");
 weatherDiv.append(pThree);
-
 var wind = response.wind.speed;
 var pFour = $("<p>").text("Wind Speed: " + wind + " MPH");
 weatherDiv.append(pFour);
-
 $("#weather-view").append(weatherDiv);
-
 //creating variables to get the UV Index
 var lat = response.coord.lat;
 var lon = response.coord.lon;
 var queryUV = "http://api.openweathermap.org/data/2.5/uvi?appid=" + APIKey + "&lat=" + lat + "&lon=" + lon;
-
 //making ajax call to get the UV Index from a different URL
 $.ajax({
   url: queryUV,
   method: "GET"
 }).then(function(response) {
-
 var uvIndex = response.value;
 var pFive = $("<p> UV Index: " + "<span id='uv-index'>" + uvIndex + "</span></p>");
-
 weatherDiv.append(pFive);
 });
-
 //creating variables to get the 5 day forcast
 var countryCode = response.sys.country;
 var queryForcast = "http://api.openweathermap.org/data/2.5/forecast?q=" + cityWeather + "," + countryCode + "&appid=" + APIKey;
-
 $.ajax({
   url: queryForcast,
   method: "GET"
 }).then(function(response) {
-
    var forcastArr = [];
 //getting 1 time slot of the 8 time slots per day, in the response.list, and putting it in the forcastArr     
     for (var i = 0; i < response.list.length; i++) {
-
      if (response.list[i].dt_txt.indexOf("15:00:00") !== -1) {
    forcastArr.push(response.list[i]);
     }
@@ -147,9 +125,7 @@ $.ajax({
 //==========================================================
 //            making forcast divs
 //==========================================================
-
 //============== forcast day 1 =============================
-
 //forcast 1 title
 var forcast1 = $("<div id='forcastDiv' class='bg-primary'>")
 var day1 = moment().add(1, 'days').format("l");
@@ -170,9 +146,7 @@ var forcastHumidity1 = $("<p>").text("Humidity: " + humidity1 + "%");
 forcast1.append(forcastHumidity1);
 //appending forcast1 to div
 $("#fiveDay").append(forcast1);
-
 //=============== forcast day two ==========================
-
 var forcast2 = $("<div id='forcastDiv' class='bg-primary'>")
 var day2 = moment().add(2, 'days').format("l");
 var date2 = $("<h4>").text(day2);
@@ -192,9 +166,7 @@ var forcastHumidity2 = $("<p>").text("Humidity: " + humidity2 + "%");
 forcast2.append(forcastHumidity2);
 //appending forcast2 to div
 $("#fiveDay").append(forcast2);
-
 //=============== forcast day three ==========================
-
 var forcast3 = $("<div id='forcastDiv' class='bg-primary'>")
 var day3 = moment().add(3, 'days').format("l");
 var date3 = $("<h4>").text(day3);
@@ -214,9 +186,7 @@ var forcastHumidity3 = $("<p>").text("Humidity: " + humidity3 + "%");
 forcast3.append(forcastHumidity3);
 //appending forcast3 to div
 $("#fiveDay").append(forcast3);
-
 //=============== forcast day four ==========================
-
 var forcast4 = $("<div id='forcastDiv' class='bg-primary'>")
 var day4 = moment().add(4, 'days').format("l");
 var date4 = $("<h4>").text(day4);
@@ -236,9 +206,7 @@ var forcastHumidity4 = $("<p>").text("Humidity: " + humidity4 + "%");
 forcast4.append(forcastHumidity4);
 //appending forcast4 to div
 $("#fiveDay").append(forcast4);
-
 //=============== forcast day five ==========================
-
 var forcast5 = $("<div id='forcastDiv' class='bg-primary'>")
 var day5 = moment().add(5, 'days').format("l");
 var date5 = $("<h4>").text(day5);
@@ -258,26 +226,22 @@ var forcastHumidity5 = $("<p>").text("Humidity: " + humidity5 + "%");
 forcast5.append(forcastHumidity5);
 //appending forcast5 to div
 $("#fiveDay").append(forcast5);
-
 });
-
  });
-
 }
-
-
-
 function renderButtons() {
-
 // Deleting the cities prior to adding new cities
 // (this is necessary otherwise you will have repeat buttons)
 $("#cities-view").empty();
-
-var storedCitiesArr = JSON.parse(localStorage.getItem("citiesArr"));
-cities = storedCitiesArr
+var storedCitiesArr = JSON.parse(localStorage.getItem("citiesArr")) || 'null';
+if (storedCitiesArr == 'null') {
+    storedCitiesArr = 'raleigh';
+} else {
+cities = storedCitiesArr;
+}
+console.log(storedCitiesArr);
 // Looping through the array of cities
 for (var i = 0; i < cities.length; i++) {
-
   // Then dynamicaly generating buttons for each city in the array
   var a = $("<button>");
   // Adding a class of city-btn to our button
@@ -290,20 +254,15 @@ for (var i = 0; i < cities.length; i++) {
   $("#cities-view").append(a);
   }
 }
-
-
      $("#add-city").on("click", function(event) {
         event.preventDefault();
         // This line grabs the input from the textbox
         var city = $("#city-input").val().trim();
-
         // Adding city from the textbox to our array (--if/else-- to prevent entering empty input)
         if (city === "") {
             return;
         } else {
-
         cities.unshift(city);
-
   // shifting off first item of array if length is greater than 10
         if (cities.length > 10) {
             cities.pop();
@@ -311,14 +270,10 @@ for (var i = 0; i < cities.length; i++) {
         // Calling renderButtons which handles the processing of our cities array
     localStorage.setItem("citiesArr" , JSON.stringify(cities));
         renderButtons();
-
         $("#city-input").val("");
      }});
-
      // Adding a click event listener to all elements with a class of "movie-btn"
      $(document).on("click", ".city-btn", displayCityInfo);
-
-
     // Calling the renderButtons function to display the initial buttons
     renderButtons();
     displayCityInfo();
