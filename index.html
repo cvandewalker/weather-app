@@ -33,7 +33,7 @@
                             <label for="city-input">Search for a City:</label>
                             <br>
                             <input type="text" id="city-input">
-                            <input class="bg-primary" id="add-city" type="submit" value="i">
+                            <button class="bg-primary" id="add-city" type="submit"><i class='fas fa-search'></i></button>
                         </form>  
                     </div>
                     <div class="row" id="cities-view">
@@ -65,12 +65,21 @@ function displayCityInfo() {
     $("#weather-view").empty();
     $("#fiveDay").empty();
 
+ // Here we are building the URL we need to query the database
+ //============================================================
+
 // This is our API key
  var APIKey = "1e2baac35502ada6a2f1228a812729b7";
- // Here we are building the URL we need to query the database
- var cityWeather = $(this).attr("data-name");
+ // creating city variable with two options
+ var cityWeather = $(this).attr("data-name") || 'undefined';
+
+//creating if/else so that last searched for city renders on page reload.
+ if (cityWeather == 'undefined') {
+    cityWeather = cities[0];
+ } else {
+     cityWeather = $(this).attr("data-name");
+ }
  var queryURL = "http://api.openweathermap.org/data/2.5/weather?q=" + cityWeather + "&appid=" + APIKey;
- 
  
 
 // Creating an AJAX call for the specific city button being clicked
@@ -264,16 +273,12 @@ function renderButtons() {
 // (this is necessary otherwise you will have repeat buttons)
 $("#cities-view").empty();
 
+var storedCitiesArr = JSON.parse(localStorage.getItem("citiesArr"));
+cities = storedCitiesArr
 // Looping through the array of cities
 for (var i = 0; i < cities.length; i++) {
 
-  // shifting off first item of array if length is greater than 10
-  if (cities.length > 11) {
-    cities.shift();
-  } else {
-
   // Then dynamicaly generating buttons for each city in the array
-  
   var a = $("<button>");
   // Adding a class of city-btn to our button
   a.addClass("city-btn");
@@ -285,7 +290,7 @@ for (var i = 0; i < cities.length; i++) {
   $("#cities-view").append(a);
   }
 }
-}
+
 
      $("#add-city").on("click", function(event) {
         event.preventDefault();
@@ -297,9 +302,14 @@ for (var i = 0; i < cities.length; i++) {
             return;
         } else {
 
-        cities.push(city);
+        cities.unshift(city);
 
+  // shifting off first item of array if length is greater than 10
+        if (cities.length > 10) {
+            cities.pop();
+        } 
         // Calling renderButtons which handles the processing of our cities array
+    localStorage.setItem("citiesArr" , JSON.stringify(cities));
         renderButtons();
 
         $("#city-input").val("");
@@ -311,6 +321,7 @@ for (var i = 0; i < cities.length; i++) {
 
     // Calling the renderButtons function to display the initial buttons
     renderButtons();
+    displayCityInfo();
     
     
     
